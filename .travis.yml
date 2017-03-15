@@ -11,6 +11,7 @@ cache:
     - $HOME/.m2
 before_install:
   - java -version
+  - docker pull couchbase
 script:
   - ./mvnw clean
   - ./mvnw test
