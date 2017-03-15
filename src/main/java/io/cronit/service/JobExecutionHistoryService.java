@@ -24,4 +24,12 @@ public class JobExecutionHistoryService {
         jobExecutionHistory.setStartDate(Clock.now());
         jobExecutionHistoryRepository.save(jobExecutionHistory);
     }
+
+    public void update(String jobHistoryId, JobExecutionStatus status, String errorMessage) {
+        JobExecutionHistory jobExecutionHistory = jobExecutionHistoryRepository.findOne(jobHistoryId);
+        jobExecutionHistory.setEndDate(Clock.now());
+        jobExecutionHistory.setStatus(status);
+        jobExecutionHistory.setErrorMessage(errorMessage);
+        jobExecutionHistoryRepository.save(jobExecutionHistory);
+    }
 }
