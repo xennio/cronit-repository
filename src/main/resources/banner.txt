@@ -14,10 +14,3 @@ ${AnsiColor.GREEN}  C:::::CCCCCCCC::::C ${AnsiColor.RED}r:::::r              o::
 ${AnsiColor.GREEN}   CC:::::::::::::::C ${AnsiColor.RED}r:::::r              o:::::::::::::::o  n::::n    n::::n   ${AnsiColor.BLUE}i::::::i     tt::::::::::::::t
 ${AnsiColor.GREEN}     CCC::::::::::::C ${AnsiColor.RED}r:::::r               oo:::::::::::oo   n::::n    n::::n   ${AnsiColor.BLUE}i::::::i       tt:::::::::::tt
 ${AnsiColor.GREEN}        CCCCCCCCCCCCC ${AnsiColor.RED}rrrrrrr                 ooooooooooo     nnnnnn    nnnnnn   ${AnsiColor.BLUE}iiiiiiii         ttttttttttt
-
-
-
-
-
-
-

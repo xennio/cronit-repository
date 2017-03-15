@@ -1,1 +1,1 @@
-Cronit
+[![Build Status](https://travis-ci.org/yildirimadiguzel/cronit-repository.svg?branch=master)](https://travis-ci.org/yildirimadiguzel/cronit-repository)
