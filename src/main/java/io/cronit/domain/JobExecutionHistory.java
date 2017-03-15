@@ -12,7 +12,7 @@ public class JobExecutionHistory {
 
     private String jobModelId;
 
-    private String status;
+    private JobExecutionStatus status;
 
     private String errorMessage;
 
@@ -30,14 +30,6 @@ public class JobExecutionHistory {
 
     public void setJobModelId(String jobModelId) {
         this.jobModelId = jobModelId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getErrorMessage() {
@@ -62,5 +54,13 @@ public class JobExecutionHistory {
 
     public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public JobExecutionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(JobExecutionStatus status) {
+        this.status = status;
     }
 }
