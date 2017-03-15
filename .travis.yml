@@ -19,7 +19,7 @@ before_install:
   - curl -X POST -u Administrator:password -d name=default -d ramQuotaMB=256 -d authType=sasl -d replicaNumber=0 http://$COUCHBASEHOST:8091/pools/default/buckets
 script:
   - ./mvnw clean
-  - ./mvnw test -DCOUCHBASEHOST=$COUCHBASEHOST
+  - ./mvnw test -DCOUCHBASEHOST=$COUCHBASEHOST -Dspring.profiles.active=travis
   - ./mvnw package -Pprod -DskipTests
 notifications:
   webhooks:
