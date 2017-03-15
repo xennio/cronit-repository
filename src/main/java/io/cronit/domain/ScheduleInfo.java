@@ -8,4 +8,7 @@ public abstract class ScheduleInfo {
 
     private ScheduleType scheduleType;
 
+    public ScheduleType getScheduleType() {
+        return scheduleType;
+    }
 }
