@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/yildirimadiguzel/cronit-repository.svg?branch=master)](https://travis-ci.org/yildirimadiguzel/cronit-repository)
+[![Coverage Status](https://coveralls.io/repos/github/yildirimadiguzel/cronit-repository/badge.svg?branch=master)](https://coveralls.io/github/yildirimadiguzel/cronit-repository?branch=master)
