@@ -15,13 +15,17 @@ public class JobDefinitionService {
 
     private AuthenticationService authenticationService;
 
+    private JobModelValidationService jobModelValidationService;
+
     @Autowired
     public JobDefinitionService(JobDefinitionRepository jobDefinitionRepository,
                                 HashService hashService,
-                                AuthenticationService authenticationService) {
+                                AuthenticationService authenticationService,
+                                JobModelValidationService jobModelValidationService) {
         this.jobDefinitionRepository = jobDefinitionRepository;
         this.hashService = hashService;
         this.authenticationService = authenticationService;
+        this.jobModelValidationService = jobModelValidationService;
     }
 
     public void register(JobModel jobModel) {
@@ -29,6 +33,7 @@ public class JobDefinitionService {
         String jobIdHash = hashService.toMd5(jobModel.getName(), currentCompanyId);
         JobModel found = jobDefinitionRepository.findOne(jobIdHash);
         if (found == null) {
+            jobModelValidationService.validate(jobModel);
             jobModel.setId(jobIdHash);
             jobDefinitionRepository.save(jobModel);
         } else {

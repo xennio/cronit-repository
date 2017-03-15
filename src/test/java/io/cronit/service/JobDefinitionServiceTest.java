@@ -34,6 +34,9 @@ public class JobDefinitionServiceTest {
     @Mock
     private AuthenticationService authenticationService;
 
+    @Mock
+    private JobModelValidationService jobModelValidationService;
+
     @Test
     public void it_should_throw_business_exception_when_job_with_same_name_is_already_defined() {
         ScheduleInfo scheduleInfo = new CronSchedulerBuilder().expression("* * * * *").build();
@@ -67,7 +70,9 @@ public class JobDefinitionServiceTest {
         Mockito.when(authenticationService.getCurrentCompanyId()).thenReturn(companyId);
         Mockito.when(hashService.toMd5("JobName", companyId)).thenReturn(hashedJobId);
 
-        Mockito.when(jobDefinitionRepository.findOne(hashedJobId)).thenReturn(jobModel);
+        Mockito.doThrow(new CronitSystemException("expression.not.valid", jobModel)).when(jobModelValidationService).validate(jobModel);
+
+        Mockito.when(jobDefinitionRepository.findOne(hashedJobId)).thenReturn(null);
 
         Throwable thrown = catchThrowable(() -> {
             jobDefinitionService.register(jobModel);
@@ -75,7 +80,7 @@ public class JobDefinitionServiceTest {
 
         CronitSystemException expected = (CronitSystemException) thrown;
         assertThat(expected.getErrorCode()).isEqualTo("expression.not.valid");
-        assertThat(expected.getArgs()[0].toString()).isEqualTo("JobName");
+        assertThat(expected.getArgs()[0]).isEqualTo(jobModel);
     }
 
     @Test
