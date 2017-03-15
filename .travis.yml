@@ -13,7 +13,7 @@ before_install:
   - java -version
   - docker pull couchbase
   - docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
-  - export COUCHBASEHOST = docker inspect --format '{{ .NetworkSettings.IPAddress }}' "db"
+  - export COUCHBASEHOST=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "db")
   - curl -v -X POST http://$COUCHBASEHOST:8091/pools/default -d memoryQuota=300 -d indexMemoryQuota=300
   - curl -v http://$COUCHBASEHOST:8091/node/controller/setupServices -d 'services=kv%2Cn1ql%2Cindex'
   - curl -v -X POST http://$COUCHBASEHOST:8091/settings/web -d port=8091 -d username=Administrator -d password=password
