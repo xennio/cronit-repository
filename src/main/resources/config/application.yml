@@ -21,3 +21,6 @@ security:
         enabled: false
 
 application:
+management:
+  security:
+    enabled: false
