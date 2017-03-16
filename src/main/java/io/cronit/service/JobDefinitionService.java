@@ -29,7 +29,7 @@ public class JobDefinitionService {
     }
 
     public void register(JobModel jobModel) {
-        String currentCompanyId = authenticationService.getCurrentCompanyId();
+        String currentCompanyId = authenticationService.getCurrentIdentity();
         String jobIdHash = hashService.toMd5(jobModel.getName(), currentCompanyId);
         JobModel found = jobDefinitionRepository.findOne(jobIdHash);
         if (found == null) {

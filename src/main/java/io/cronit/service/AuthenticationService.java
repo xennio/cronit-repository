@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
-    public String getCurrentCompanyId() {
+    public String getCurrentIdentity() {
         return null;
     }
 }

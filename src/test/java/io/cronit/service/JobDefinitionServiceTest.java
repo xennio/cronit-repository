@@ -46,7 +46,7 @@ public class JobDefinitionServiceTest {
         String companyId = UUID.randomUUID().toString();
         String hashedJobId = UUID.randomUUID().toString();
 
-        Mockito.when(authenticationService.getCurrentCompanyId()).thenReturn(companyId);
+        Mockito.when(authenticationService.getCurrentIdentity()).thenReturn(companyId);
         Mockito.when(hashService.toMd5("JobName", companyId)).thenReturn(hashedJobId);
 
         Mockito.when(jobDefinitionRepository.findOne(hashedJobId)).thenReturn(jobModel);
@@ -72,7 +72,7 @@ public class JobDefinitionServiceTest {
         String companyId = UUID.randomUUID().toString();
         String hashedJobId = UUID.randomUUID().toString();
 
-        Mockito.when(authenticationService.getCurrentCompanyId()).thenReturn(companyId);
+        Mockito.when(authenticationService.getCurrentIdentity()).thenReturn(companyId);
         Mockito.when(hashService.toMd5("JobName", companyId)).thenReturn(hashedJobId);
 
         Mockito.when(jobDefinitionRepository.findOne("JobName")).thenReturn(null);
