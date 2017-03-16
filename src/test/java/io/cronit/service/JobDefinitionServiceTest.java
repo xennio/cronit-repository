@@ -3,7 +3,6 @@ package io.cronit.service;
 import io.cronit.builder.CronSchedulerBuilder;
 import io.cronit.builder.RestJobModelBuilder;
 import io.cronit.common.CronitBusinessException;
-import io.cronit.common.CronitSystemException;
 import io.cronit.domain.JobModel;
 import io.cronit.domain.ScheduleInfo;
 import io.cronit.repository.JobDefinitionRepository;
@@ -18,6 +17,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobDefinitionServiceTest {
@@ -54,34 +55,14 @@ public class JobDefinitionServiceTest {
             jobDefinitionService.register(jobModel);
         });
 
+        verifyZeroInteractions(jobModelValidationService);
+
         CronitBusinessException expected = (CronitBusinessException) thrown;
         assertThat(expected.getErrorCode()).isEqualTo("job.already.exists");
         assertThat(expected.getArgs()[0].toString()).isEqualTo("JobName");
+
     }
 
-    @Test
-    public void it_should_throw_system_exception_when_job_contains_invalid_cron_expression() {
-        ScheduleInfo scheduleInfo = new CronSchedulerBuilder().expression("not valid expression").build();
-        JobModel jobModel = new RestJobModelBuilder().name("JobName").group("Default").scheduleInfo(scheduleInfo).build();
-
-        String companyId = UUID.randomUUID().toString();
-        String hashedJobId = UUID.randomUUID().toString();
-
-        Mockito.when(authenticationService.getCurrentCompanyId()).thenReturn(companyId);
-        Mockito.when(hashService.toMd5("JobName", companyId)).thenReturn(hashedJobId);
-
-        Mockito.doThrow(new CronitSystemException("expression.not.valid", jobModel)).when(jobModelValidationService).validate(jobModel);
-
-        Mockito.when(jobDefinitionRepository.findOne(hashedJobId)).thenReturn(null);
-
-        Throwable thrown = catchThrowable(() -> {
-            jobDefinitionService.register(jobModel);
-        });
-
-        CronitSystemException expected = (CronitSystemException) thrown;
-        assertThat(expected.getErrorCode()).isEqualTo("expression.not.valid");
-        assertThat(expected.getArgs()[0]).isEqualTo(jobModel);
-    }
 
     @Test
     public void it_should_try_to_save_job_model_when_job_is_not_defined_before() {
@@ -98,7 +79,8 @@ public class JobDefinitionServiceTest {
 
         jobDefinitionService.register(jobModel);
 
-        Mockito.verify(jobDefinitionRepository).save(jobModel);
+        verify(jobModelValidationService).validate(jobModel);
+        verify(jobDefinitionRepository).save(jobModel);
         assertThat(jobModel.getId()).isEqualTo(hashedJobId);
     }
 }

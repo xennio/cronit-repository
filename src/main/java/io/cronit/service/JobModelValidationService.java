@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 public class JobModelValidationService {
 
     public void validate(JobModel jobModel) {
-
+        jobModel.getScheduleInfo().validate();
     }
 }

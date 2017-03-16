@@ -11,4 +11,5 @@ public abstract class ScheduleInfo {
     public ScheduleType getScheduleType() {
         return scheduleType;
     }
+    public abstract void validate();
 }

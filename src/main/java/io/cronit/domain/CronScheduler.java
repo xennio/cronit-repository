@@ -1,6 +1,12 @@
 package io.cronit.domain;
 
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.parser.CronParser;
+import io.cronit.common.CronitSystemException;
+
 public class CronScheduler extends ScheduleInfo {
+
     private String expression;
 
     public CronScheduler() {
@@ -11,7 +17,13 @@ public class CronScheduler extends ScheduleInfo {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
+    @Override
+    public void validate() {
+        CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
+        try {
+            parser.parse(expression);
+        } catch (IllegalArgumentException iae) {
+            throw new CronitSystemException("expression.not.valid", expression);
+        }
     }
 }
