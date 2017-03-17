@@ -2,7 +2,7 @@ package io.cronit.domain;
 
 import com.couchbase.client.java.repository.annotation.Id;
 
-public abstract class JobModel {
+public abstract class JobModel  {
     @Id
     private String id;
     private String name;

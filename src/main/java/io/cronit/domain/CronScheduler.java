@@ -7,10 +7,14 @@ import io.cronit.common.CronitSystemException;
 
 public class CronScheduler extends ScheduleInfo {
 
-    private String expression;
-
     public CronScheduler() {
         super(ScheduleType.CRON);
+    }
+
+    private String expression;
+
+    public String getExpression() {
+        return expression;
     }
 
     public void setExpression(String expression) {
