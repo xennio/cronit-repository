@@ -1,6 +1,9 @@
 spring:
     application:
         name: CronitSchedulerRepository
+    jackson:
+          serialization:
+            WRITE_DATES_AS_TIMESTAMPS: false
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -11,7 +14,6 @@ couchbase:
       - 127.0.0.1
     bucket: default
     password:
-
 server:
     port: 8080
 

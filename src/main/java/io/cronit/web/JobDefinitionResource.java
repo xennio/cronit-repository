@@ -1,10 +1,10 @@
 package io.cronit.web;
 
+import com.codahale.metrics.annotation.Timed;
 import io.cronit.domain.RestJobModel;
 import io.cronit.service.JobDefinitionService;
 import io.cronit.web.vm.RestCronVM;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.cronit.web.vm.RestTaskVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import java.net.URISyntaxException;
 @RestController
 @RequestMapping("/api")
 public class JobDefinitionResource {
-    private final Logger log = LoggerFactory.getLogger(JobDefinitionResource.class);
 
     private JobDefinitionService jobDefinitionService;
 
@@ -27,14 +26,19 @@ public class JobDefinitionResource {
         this.jobDefinitionService = jobDefinitionService;
     }
 
-
     @PostMapping("/cron/rest")
+    @Timed
     public ResponseEntity createCronRestJob(@RequestBody RestCronVM restCronVM) throws URISyntaxException {
-        RestJobModel restJobModel = restCronVM.toRestJobModel();
-        jobDefinitionService.register(restCronVM.toRestJobModel());
+        RestJobModel restJobModel = restCronVM.toRestCronJobModel();
+        jobDefinitionService.register(restJobModel);
         return new ResponseEntity(restJobModel, HttpStatus.CREATED);
-
     }
 
-
+    @PostMapping("/task/rest")
+    @Timed
+    public ResponseEntity createCronRestJob(@RequestBody RestTaskVM restTaskVM) throws URISyntaxException {
+        RestJobModel restJobModel = restTaskVM.toRestTaskJobModel();
+        jobDefinitionService.register(restJobModel);
+        return new ResponseEntity(restJobModel, HttpStatus.CREATED);
+    }
 }

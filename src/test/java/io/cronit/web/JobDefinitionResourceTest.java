@@ -1,11 +1,15 @@
 package io.cronit.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cronit.CronitRepositoryApplication;
 import io.cronit.builder.RestCronVMBuilder;
+import io.cronit.builder.RestTaskVmBuilder;
+import io.cronit.common.Clock;
 import io.cronit.domain.JobModel;
 import io.cronit.service.JobDefinitionService;
 import io.cronit.web.vm.RestCronVM;
+import io.cronit.web.vm.RestTaskVM;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -30,10 +37,11 @@ public class JobDefinitionResourceTest {
     @Mock
     private JobDefinitionService jobDefinitionService;
 
-
     private MockMvc restJobDefinitionMockMvc;
 
     private JacksonTester<RestCronVM> restCronTester;
+
+    private JacksonTester<RestTaskVM> restTaskTester;
 
     @Before
     public void setup() {
@@ -41,14 +49,12 @@ public class JobDefinitionResourceTest {
         this.restJobDefinitionMockMvc = MockMvcBuilders.standaloneSetup(jobDefinitionResource).build();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         JacksonTester.initFields(this, objectMapper);
-
     }
-
 
     @Test
     public void it_should_create_rest_job_with_cron_expression() throws Exception {
-
         RestCronVM restCronVM = RestCronVMBuilder.aSampleCronVM();
 
         String jsonBody = restCronTester.write(restCronVM).getJson();
@@ -60,5 +66,22 @@ public class JobDefinitionResourceTest {
                 .andExpect(content().json("{\"id\":\"" + restCronVM.getId() + "\",\"name\":\"SampleJob\",\"group\":\"group\",\"scheduleInfo\":{\"scheduleType\":\"CRON\",\"expression\":\"* * * * *\"},\"method\":\"GET\",\"url\":\"http://url\",\"headers\":{\"foo\":\"bar\",\"key\":\"val\"},\"body\":\"body\",\"expectedStatus\":200}"));
 
         verify(jobDefinitionService).register(any(JobModel.class));
+    }
+
+    @Test
+    public void it_should_schedule_single_rest_task() throws Exception {
+        Clock.freeze(ZonedDateTime.of(2015, 8, 23, 0, 0, 0, 0, ZoneId.of("UTC")));
+        RestTaskVM restTaskVm = RestTaskVmBuilder.aSampleTaskVM(ZonedDateTime.of(2018, 8, 23, 0, 0, 0, 0, ZoneId.of("UTC")));
+
+        String jsonBody = restTaskTester.write(restTaskVm).getJson();
+
+        restJobDefinitionMockMvc.perform(post("/api/task/rest").content(jsonBody)
+                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json("{\"id\":\"" + restTaskVm.getId() + "\",\"name\":\"SampleJob\",\"group\":\"group\",\"scheduleInfo\":{\"scheduleType\":\"SINGLE\",\"when\":1.5349824E9},\"method\":\"GET\",\"url\":\"http://url\",\"headers\":{\"foo\":\"bar\",\"key\":\"val\"},\"body\":\"body\",\"expectedStatus\":200}"));
+
+        verify(jobDefinitionService).register(any(JobModel.class));
+        Clock.unfreeze();
     }
 }
