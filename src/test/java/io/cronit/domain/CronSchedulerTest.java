@@ -27,4 +27,10 @@ public class CronSchedulerTest {
         assertThat(expected.getErrorCode()).isEqualTo("expression.not.valid");
         assertThat(expected.getArgs()[0]).isEqualTo("not valid expression");
     }
+
+    @Test
+    public void it_should_not_throw_any_exception_when_cron_expression_is_valid() {
+        ScheduleInfo scheduleInfo = new CronSchedulerBuilder().expression("* * * * *").build();
+        scheduleInfo.validate();
+    }
 }

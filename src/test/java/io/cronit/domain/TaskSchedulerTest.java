@@ -19,6 +19,15 @@ public class TaskSchedulerTest {
     }
 
     @Test
+    public void it_should_not_throw_any_exception_when_task_date_after_now() {
+        ZonedDateTime taskDate = ZonedDateTime.of(2020, 3, 18, 0, 0, 0, 0, ZoneId.of("UTC"));
+        Clock.freeze(ZonedDateTime.of(2017, 3, 18, 0, 0, 0, 0, ZoneId.of("UTC")));
+        ScheduleInfo scheduleInfo = new TaskSchedulerBuilder().when(taskDate).build();
+        scheduleInfo.validate();
+        Clock.unfreeze();
+    }
+
+    @Test
     public void it_should_throw_system_exception_when_task_date_before_now() {
         ZonedDateTime taskDate = ZonedDateTime.of(2015, 3, 18, 0, 0, 0, 0, ZoneId.of("UTC"));
 
