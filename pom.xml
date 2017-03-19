@@ -11,12 +11,33 @@
     <name>cronit-repository</name>
     <description>Schedule Job Repository Service</description>
 
+    <organization>
+        <name>212data</name>
+        <url>http://www.212data.com</url>
+    </organization>
+
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Yıldırım ADIGÜZEL</name>
+            <email>yildirim.adiguzel@212data.com</email>
+            <organization>212data</organization>
+            <organizationUrl>http://www.212data.com</organizationUrl>
+        </developer>
+
+        <developer>
+            <name>Ümit ÜNAL</name>
+            <email>umit.unal@212data.com</email>
+            <organization>212data</organization>
+            <organizationUrl>http://www.212data.com</organizationUrl>
+        </developer>
+    </developers>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
