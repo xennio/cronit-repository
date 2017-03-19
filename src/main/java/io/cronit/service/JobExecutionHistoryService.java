@@ -17,19 +17,21 @@ public class JobExecutionHistoryService {
         this.jobExecutionHistoryRepository = jobExecutionHistoryRepository;
     }
 
-    public void start(String jobModelId) {
+    public JobExecutionHistory start(String jobModelId) {
         JobExecutionHistory jobExecutionHistory = new JobExecutionHistory();
         jobExecutionHistory.setJobModelId(jobModelId);
         jobExecutionHistory.setStatus(JobExecutionStatus.Started);
         jobExecutionHistory.setStartDate(Clock.now());
         jobExecutionHistoryRepository.save(jobExecutionHistory);
+        return jobExecutionHistory;
     }
 
-    public void update(String jobHistoryId, JobExecutionStatus status, String errorMessage) {
+    public JobExecutionHistory update(String jobHistoryId, JobExecutionStatus status, String errorMessage) {
         JobExecutionHistory jobExecutionHistory = jobExecutionHistoryRepository.findOne(jobHistoryId);
         jobExecutionHistory.setEndDate(Clock.now());
         jobExecutionHistory.setStatus(status);
         jobExecutionHistory.setErrorMessage(errorMessage);
         jobExecutionHistoryRepository.save(jobExecutionHistory);
+        return jobExecutionHistory;
     }
 }

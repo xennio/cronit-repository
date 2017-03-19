@@ -37,4 +37,8 @@ public class JobExecutionHistoryBuilder {
     public JobExecutionHistory build() {
         return jobExecutionHistory;
     }
+
+    public static JobExecutionHistoryBuilder aJobHistory() {
+        return new JobExecutionHistoryBuilder();
+    }
 }
