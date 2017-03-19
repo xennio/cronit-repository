@@ -28,8 +28,17 @@ public class JobExecutionHistoryResource {
 
     @PostMapping("/history/start")
     @Timed
-    public ResponseEntity createCronRestJob(@RequestBody JobExecutionHistoryVM jobExecutionHistoryVM) throws URISyntaxException {
+    public ResponseEntity startJob(@RequestBody JobExecutionHistoryVM jobExecutionHistoryVM) throws URISyntaxException {
         JobExecutionHistory jobExecutionHistory = jobExecutionHistoryService.start(jobExecutionHistoryVM.getId());
+        return new ResponseEntity(jobExecutionHistory, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/history/finish")
+    @Timed
+    public ResponseEntity finishJob(@RequestBody JobExecutionHistoryVM jobExecutionHistoryVM) throws URISyntaxException {
+        JobExecutionHistory jobExecutionHistory = jobExecutionHistoryService
+                .update(jobExecutionHistoryVM.getId(), jobExecutionHistoryVM.getStatus(), jobExecutionHistoryVM.getErrorMessage());
+
         return new ResponseEntity(jobExecutionHistory, HttpStatus.CREATED);
     }
 }

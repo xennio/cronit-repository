@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.cronit.CronitRepositoryApplication;
 import io.cronit.builder.JobExecutionHistoryBuilder;
+import io.cronit.builder.JobExecutionHistoryVMBuilder;
 import io.cronit.common.Clock;
 import io.cronit.domain.JobExecutionHistory;
 import io.cronit.domain.JobExecutionStatus;
 import io.cronit.service.JobExecutionHistoryService;
+import io.cronit.web.vm.JobExecutionHistoryVM;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +37,8 @@ public class JobExecutionHistoryResourceTest {
 
     private JacksonTester<JobExecutionHistory> jobExecutionHistoryJacksonTester;
 
+    private JacksonTester<JobExecutionHistoryVM> jobExecutionHistoryVMJacksonTester;
+
     @Before
     public void setup() {
         JobExecutionHistoryResource jobExecutionHistoryResource = new JobExecutionHistoryResource(jobExecutionHistoryService);
@@ -52,6 +56,30 @@ public class JobExecutionHistoryResourceTest {
         when(jobExecutionHistoryService.start("jobId")).thenReturn(jobExecutionHistory);
 
         String response = restJobExecutionHistoryMockMvc.perform(post("/api/history/start").content("{\"id\":\"jobId\"}")
+                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+
+        JobExecutionHistory expected = jobExecutionHistoryJacksonTester.parse(response).getObject();
+
+        assertThat(expected.getId()).isEqualTo(jobExecutionHistory.getId());
+        assertThat(expected.getStatus()).isEqualTo(jobExecutionHistory.getStatus());
+
+    }
+
+    @Test
+    public void it_should_update_job_execution_history_record_when_job_finished() throws Exception {
+
+        JobExecutionHistoryVM jobExecutionHistoryVM = JobExecutionHistoryVMBuilder.aJobExecutionHistoryVM().id("jobId")
+                .status(JobExecutionStatus.Failed).errorMessage("Error Message").build();
+
+        JobExecutionHistory jobExecutionHistory = JobExecutionHistoryBuilder.aJobHistory().endDate(Clock.now()).errorMessage("Error Message")
+                .startDate(Clock.now()).status(JobExecutionStatus.Started).build();
+
+        when(jobExecutionHistoryService.update(jobExecutionHistoryVM.getId(), JobExecutionStatus.Failed, "Error Message"))
+                .thenReturn(jobExecutionHistory);
+
+        String response = restJobExecutionHistoryMockMvc.perform(post("/api/history/finish")
+                .content(jobExecutionHistoryVMJacksonTester.write(jobExecutionHistoryVM).getJson())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 
