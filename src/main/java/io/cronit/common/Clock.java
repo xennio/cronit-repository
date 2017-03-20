@@ -1,13 +1,15 @@
 package io.cronit.common;
 
 
-import java.time.ZonedDateTime;
+import org.joda.time.DateTime;
+
+import java.util.Date;
 
 public class Clock {
 
     private static boolean isFrozen;
 
-    private static ZonedDateTime timeSet;
+    private static DateTime timeSet;
 
     private Clock() {
     }
@@ -16,9 +18,14 @@ public class Clock {
         isFrozen = true;
     }
 
-    public synchronized static void freeze(ZonedDateTime date) {
+    public synchronized static void freeze(DateTime date) {
         freeze();
         setTime(date);
+    }
+
+    public synchronized static void freeze(String date) {
+        freeze();
+        setTime(DateTime.parse(date));
     }
 
     public synchronized static void unfreeze() {
@@ -26,20 +33,28 @@ public class Clock {
         timeSet = null;
     }
 
-    public static ZonedDateTime now() {
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+    public static DateTime now() {
+        DateTime dateTime = DateTime.now();
         if (isFrozen) {
             if (timeSet == null) {
-                timeSet = zonedDateTime;
+                timeSet = dateTime;
             }
             return timeSet;
         }
 
-        return zonedDateTime;
+        return dateTime;
     }
 
-    public synchronized static void setTime(ZonedDateTime date) {
+    public synchronized static void setTime(DateTime date) {
         timeSet = date;
     }
 
+
+    public static boolean isAfterNow(Date date) {
+        return Clock.now().isAfter(new DateTime(date));
+    }
+
+    public static boolean isBeforeNow(Date date) {
+        return !isAfterNow(date);
+    }
 }

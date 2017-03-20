@@ -2,8 +2,9 @@ spring:
     application:
         name: CronitSchedulerRepository
     jackson:
-          serialization:
-            WRITE_DATES_AS_TIMESTAMPS: false
+        date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+        serialization:
+            write-dates-as-timestamps: false
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file

@@ -2,14 +2,13 @@ package io.cronit.builder;
 
 import io.cronit.domain.ScheduleInfo;
 import io.cronit.domain.TaskScheduler;
-
-import java.time.ZonedDateTime;
+import org.joda.time.DateTime;
 
 public class TaskSchedulerBuilder {
 
     TaskScheduler taskScheduler = new TaskScheduler();
 
-    public TaskSchedulerBuilder when(ZonedDateTime when) {
+    public TaskSchedulerBuilder when(DateTime when) {
         taskScheduler.setWhen(when);
         return this;
     }

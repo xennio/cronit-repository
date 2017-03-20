@@ -2,15 +2,14 @@ package io.cronit.domain;
 
 import io.cronit.common.Clock;
 import io.cronit.common.CronitSystemException;
-
-import java.time.ZonedDateTime;
+import org.joda.time.DateTime;
 
 public class TaskScheduler extends ScheduleInfo {
     public TaskScheduler() {
         super(ScheduleType.SINGLE);
     }
 
-    private ZonedDateTime when;
+    private DateTime when;
 
     @Override
     public void validate() {
@@ -19,11 +18,11 @@ public class TaskScheduler extends ScheduleInfo {
         }
     }
 
-    public ZonedDateTime getWhen() {
+    public DateTime getWhen() {
         return when;
     }
 
-    public void setWhen(ZonedDateTime when) {
+    public void setWhen(DateTime when) {
         this.when = when;
     }
 }

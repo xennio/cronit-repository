@@ -1,8 +1,8 @@
 package io.cronit.domain;
 
 import com.couchbase.client.java.repository.annotation.Id;
+import org.joda.time.DateTime;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public class JobExecutionHistory {
@@ -16,9 +16,9 @@ public class JobExecutionHistory {
 
     private String errorMessage;
 
-    private ZonedDateTime startDate;
+    private DateTime startDate;
 
-    private ZonedDateTime endDate;
+    private DateTime endDate;
 
     public String getId() {
         return id;
@@ -40,19 +40,19 @@ public class JobExecutionHistory {
         this.errorMessage = errorMessage;
     }
 
-    public ZonedDateTime getStartDate() {
+    public DateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(ZonedDateTime startDate) {
+    public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
 
-    public ZonedDateTime getEndDate() {
+    public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(ZonedDateTime endDate) {
+    public void setEndDate(DateTime endDate) {
         this.endDate = endDate;
     }
 

@@ -2,17 +2,16 @@ package io.cronit.web.vm;
 
 import io.cronit.domain.RestJobModel;
 import io.cronit.domain.TaskScheduler;
-
-import java.time.ZonedDateTime;
+import org.joda.time.DateTime;
 
 public class RestTaskVM extends RestVM {
-    private ZonedDateTime when;
+    private DateTime when;
 
-    public ZonedDateTime getWhen() {
+    public DateTime getWhen() {
         return when;
     }
 
-    public void setWhen(ZonedDateTime when) {
+    public void setWhen(DateTime when) {
         this.when = when;
     }
 

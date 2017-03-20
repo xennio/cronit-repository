@@ -2,8 +2,7 @@ package io.cronit.builder;
 
 import io.cronit.domain.JobExecutionHistory;
 import io.cronit.domain.JobExecutionStatus;
-
-import java.time.ZonedDateTime;
+import org.joda.time.DateTime;
 
 public class JobExecutionHistoryBuilder {
 
@@ -24,12 +23,12 @@ public class JobExecutionHistoryBuilder {
         return this;
     }
 
-    public JobExecutionHistoryBuilder startDate(ZonedDateTime startDate) {
+    public JobExecutionHistoryBuilder startDate(DateTime startDate) {
         jobExecutionHistory.setStartDate(startDate);
         return this;
     }
 
-    public JobExecutionHistoryBuilder endDate(ZonedDateTime endDate) {
+    public JobExecutionHistoryBuilder endDate(DateTime endDate) {
         jobExecutionHistory.setEndDate(endDate);
         return this;
     }

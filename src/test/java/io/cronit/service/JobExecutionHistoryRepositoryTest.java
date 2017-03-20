@@ -5,15 +5,13 @@ import io.cronit.common.Clock;
 import io.cronit.domain.JobExecutionHistory;
 import io.cronit.domain.JobExecutionStatus;
 import io.cronit.repository.JobExecutionHistoryRepository;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
@@ -31,8 +29,7 @@ public class JobExecutionHistoryRepositoryTest {
     @Test
     public void it_should_insert_job_execution_when_job_started() {
         ArgumentCaptor<JobExecutionHistory> jobExecutionHistoryArgumentCaptor = ArgumentCaptor.forClass(JobExecutionHistory.class);
-        Clock.freeze();
-        Clock.setTime(ZonedDateTime.of(2017, 3, 15, 0, 0, 0, 0, ZoneId.of("GMT")));
+        Clock.freeze("20170315");
         jobExecutionHistoryService.start("JobId");
 
         verify(jobExecutionHistoryRepository).save(jobExecutionHistoryArgumentCaptor.capture());
@@ -48,10 +45,8 @@ public class JobExecutionHistoryRepositoryTest {
 
     @Test
     public void it_should_update_job_execution_when_job_finished() {
-        Clock.freeze();
-        ZonedDateTime startDate = ZonedDateTime.of(2017, 3, 15, 0, 0, 0, 0, ZoneId.of("GMT"));
-        ZonedDateTime endDate = ZonedDateTime.of(2017, 3, 16, 0, 0, 0, 0, ZoneId.of("GMT"));
-        Clock.setTime(endDate);
+        Clock.freeze("20170316");
+        DateTime startDate = DateTime.parse("20170315");
 
         JobExecutionHistory jobExecutionHistory = new JobExecutionHistoryBuilder().jobModelId("JobId").
                 startDate(startDate).status(JobExecutionStatus.Started).build();

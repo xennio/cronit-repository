@@ -1,7 +1,7 @@
 package io.cronit.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import io.cronit.CronitRepositoryApplication;
 import io.cronit.builder.JobExecutionHistoryBuilder;
 import io.cronit.builder.JobExecutionHistoryVMBuilder;
@@ -45,7 +45,9 @@ public class JobExecutionHistoryResourceTest {
         restJobExecutionHistoryMockMvc = MockMvcBuilders.standaloneSetup(jobExecutionHistoryResource).build();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new JodaModule());
+        objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.
+                WRITE_DATES_AS_TIMESTAMPS, false);
         JacksonTester.initFields(this, objectMapper);
     }
 

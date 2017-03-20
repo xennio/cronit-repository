@@ -1,14 +1,14 @@
 package io.cronit.builder;
 
 import io.cronit.web.vm.RestTaskVM;
+import org.joda.time.DateTime;
 
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public final class RestTaskVmBuilder {
-    private ZonedDateTime when;
+    private DateTime when;
     private String id;
     private String name;
     private String group;
@@ -25,7 +25,7 @@ public final class RestTaskVmBuilder {
         return new RestTaskVmBuilder();
     }
 
-    public RestTaskVmBuilder when(ZonedDateTime when) {
+    public RestTaskVmBuilder when(DateTime when) {
         this.when = when;
         return this;
     }
@@ -89,7 +89,7 @@ public final class RestTaskVmBuilder {
         return restTaskVm;
     }
 
-    public static RestTaskVM aSampleTaskVM(ZonedDateTime when) {
+    public static RestTaskVM aSampleTaskVM(DateTime when) {
         return RestTaskVmBuilder.aRestTaskVm()
                 .id(UUID.randomUUID().toString())
                 .body("body").expectedStatus(200)
