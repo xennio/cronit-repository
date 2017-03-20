@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 
 import java.util.Date;
 
-public class Clock {
+public final class Clock {
 
     private static boolean isFrozen;
 
@@ -21,11 +21,6 @@ public class Clock {
     public synchronized static void freeze(DateTime date) {
         freeze();
         setTime(date);
-    }
-
-    public synchronized static void freeze(String date) {
-        freeze();
-        setTime(DateTime.parse(date));
     }
 
     public synchronized static void unfreeze() {

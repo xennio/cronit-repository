@@ -5,6 +5,7 @@ import io.cronit.common.Clock;
 import io.cronit.domain.JobExecutionHistory;
 import io.cronit.domain.JobExecutionStatus;
 import io.cronit.repository.JobExecutionHistoryRepository;
+import io.cronit.utils.ClockUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +30,7 @@ public class JobExecutionHistoryRepositoryTest {
     @Test
     public void it_should_insert_job_execution_when_job_started() {
         ArgumentCaptor<JobExecutionHistory> jobExecutionHistoryArgumentCaptor = ArgumentCaptor.forClass(JobExecutionHistory.class);
-        Clock.freeze("20170315");
+        Clock.freeze(ClockUtils.toLocalDate("20170315"));
         jobExecutionHistoryService.start("JobId");
 
         verify(jobExecutionHistoryRepository).save(jobExecutionHistoryArgumentCaptor.capture());
@@ -45,7 +46,7 @@ public class JobExecutionHistoryRepositoryTest {
 
     @Test
     public void it_should_update_job_execution_when_job_finished() {
-        Clock.freeze("20170316");
+        Clock.freeze(ClockUtils.toLocalDate("20170316"));
         DateTime startDate = DateTime.parse("20170315");
 
         JobExecutionHistory jobExecutionHistory = new JobExecutionHistoryBuilder().jobModelId("JobId").

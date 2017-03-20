@@ -69,7 +69,7 @@ public class JobDefinitionResourceTest {
 
     @Test
     public void it_should_schedule_single_rest_task() throws Exception {
-        Clock.freeze("20150823");
+        Clock.freeze(ClockUtils.toLocalDate("20150823"));
         RestTaskVM restTaskVm = RestTaskVmBuilder.aSampleTaskVM(ClockUtils.toLocalDate("20180823"));
 
         String jsonBody = restTaskTester.write(restTaskVm).getJson();
