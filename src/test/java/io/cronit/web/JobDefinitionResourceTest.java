@@ -69,7 +69,6 @@ public class JobDefinitionResourceTest {
 
     @Test
     public void it_should_schedule_single_rest_task() throws Exception {
-        Clock.freeze(ClockUtils.toLocalDate("20150823"));
         RestTaskVM restTaskVm = RestTaskVmBuilder.aSampleTaskVM(ClockUtils.toLocalDate("20180823"));
 
         String jsonBody = restTaskTester.write(restTaskVm).getJson();
@@ -78,7 +77,7 @@ public class JobDefinitionResourceTest {
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json("{\"id\":\"" + restTaskVm.getId() + "\",\"name\":\"SampleJob\",\"group\":\"group\",\"scheduleInfo\":{\"scheduleType\":\"SINGLE\",\"when\":1534971600000},\"method\":\"GET\",\"url\":\"http://url\",\"headers\":{\"foo\":\"bar\",\"key\":\"val\"},\"body\":\"body\",\"expectedStatus\":200}"));
+                .andExpect(content().json("{\"id\":\"" + restTaskVm.getId() + "\",\"name\":\"SampleJob\",\"group\":\"group\",\"scheduleInfo\":{\"scheduleType\":\"SINGLE\",\"when\":" + restTaskVm.getWhen().getMillis() + "},\"method\":\"GET\",\"url\":\"http://url\",\"headers\":{\"foo\":\"bar\",\"key\":\"val\"},\"body\":\"body\",\"expectedStatus\":200}"));
 
         verify(jobDefinitionService).register(any(JobModel.class));
         Clock.unfreeze();
