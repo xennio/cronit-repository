@@ -13,7 +13,7 @@ before_install:
   - java -version
   - docker pull couchbase
   - docker run -d --name db -p 8091-8094:8091-8094 -p 11210:11210 couchbase
-  - sleep 60
+  - sleep 10
   - export COUCHBASEHOST=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' "db")
   - curl -v -X POST http://$COUCHBASEHOST:8091/settings/web -d port=8091 -d username=Administrator -d password=password
   - curl -X POST -u Administrator:password -d name=default -d ramQuotaMB=256 -d authType=sasl -d replicaNumber=0 http://$COUCHBASEHOST:8091/pools/default/buckets
