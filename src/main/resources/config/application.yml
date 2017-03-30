@@ -23,6 +23,7 @@ security:
     basic:
         enabled: false
 application:
+    hash-salt: salt
 management:
   security:
     enabled: false
